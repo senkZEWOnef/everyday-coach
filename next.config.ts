@@ -1,5 +1,5 @@
 import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
-  experimental: { typedRoutes: true },
+  experimental: { typedRoutes: false },
 };
 export default nextConfig;

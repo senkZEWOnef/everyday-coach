@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { Inter } from "next/font/google";
 import { SiteNavbar } from "@/components/SiteNavbar";
+import { Footer } from "@/components/Footer";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -19,11 +20,12 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={inter.className}>
-        <div className="min-h-screen grid grid-rows-[auto,1fr]">
+        <div className="min-h-screen flex flex-col">
           <SiteNavbar />
-          <main className="container-px py-6 max-w-7xl mx-auto">
+          <main className="flex-1 container-px py-6 max-w-7xl mx-auto">
             {children}
           </main>
+          <Footer />
         </div>
       </body>
     </html>

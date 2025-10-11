@@ -13,22 +13,54 @@ body {
   @apply bg-brand-bg text-white;
 }
 
-// Reusable utilities
-.container-px {
-  @apply px-4 sm:px-6 lg:px-8;
+/* Reusable components */
+@layer components {
+  .container-px {
+    @apply px-4 sm:px-6 lg:px-8;
+  }
+  .card {
+    @apply bg-brand-card rounded-2xl shadow-soft border border-white/5;
+  }
+  .btn {
+    @apply inline-flex items-center justify-center rounded-xl px-3 py-2 sm:px-4 font-medium transition text-sm;
+  }
+  .btn-primary {
+    @apply inline-flex items-center justify-center rounded-xl px-3 py-2 sm:px-4 font-medium transition bg-brand-accent text-black hover:opacity-90 text-sm;
+  }
+  .btn-ghost {
+    @apply inline-flex items-center justify-center rounded-xl px-3 py-2 sm:px-4 font-medium transition bg-white/5 hover:bg-white/10 text-sm;
+  }
+  .badge {
+    @apply inline-flex items-center gap-1 rounded-full bg-white/10 px-2 sm:px-3 py-1 text-xs;
+  }
 }
-.card {
-  @apply bg-brand-card rounded-2xl shadow-soft border border-white/5;
+
+/* Mobile-specific styles */
+@media (max-width: 640px) {
+  .grid-responsive {
+    grid-template-columns: 1fr;
+  }
+  
+  .text-responsive {
+    font-size: 0.875rem;
+  }
+  
+  /* Better touch targets for mobile */
+  button, a {
+    min-height: 44px;
+  }
+  
+  /* Improved spacing on mobile */
+  .mobile-padding {
+    padding: 1rem;
+  }
 }
-.btn {
-  @apply inline-flex items-center justify-center rounded-xl px-4 py-2 font-medium transition;
-}
-.btn-primary {
-  @apply btn bg-brand-accent text-black hover:opacity-90;
-}
-.btn-ghost {
-  @apply btn bg-white/5 hover:bg-white/10;
-}
-.badge {
-  @apply inline-flex items-center gap-1 rounded-full bg-white/10 px-3 py-1 text-xs;
+
+/* Line clamp utility */
+.line-clamp-3 {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
