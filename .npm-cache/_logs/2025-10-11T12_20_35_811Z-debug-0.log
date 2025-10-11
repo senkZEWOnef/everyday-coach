@@ -7,11 +7,11 @@
 6 silly config load:file:/usr/local/etc/npmrc
 7 verbose title npm view @anthropic-ai/claude-code@latest version
 8 verbose argv "view" "@anthropic-ai/claude-code@latest" "version"
-9 verbose logfile logs-max:10 dir:/Users/ralphulysse/Documents/everyday-coach/.npm-cache/_logs/2025-10-11T02_43_14_516Z-
-10 verbose logfile /Users/ralphulysse/Documents/everyday-coach/.npm-cache/_logs/2025-10-11T02_43_14_516Z-debug-0.log
+9 verbose logfile logs-max:10 dir:/Users/ralphulysse/Documents/everyday-coach/.npm-cache/_logs/2025-10-11T12_20_35_811Z-
+10 verbose logfile /Users/ralphulysse/Documents/everyday-coach/.npm-cache/_logs/2025-10-11T12_20_35_811Z-debug-0.log
 11 silly logfile start cleaning logs, removing 1 files
 12 silly logfile done cleaning log files
-13 http fetch GET 200 https://registry.npmjs.org/@anthropic-ai%2fclaude-code 366ms (cache revalidated)
+13 http fetch GET 200 https://registry.npmjs.org/@anthropic-ai%2fclaude-code 267ms (cache revalidated)
 14 verbose cwd /Users/ralphulysse/Documents/everyday-coach
 15 verbose os Darwin 24.5.0
 16 verbose node v20.17.0

@@ -8,19 +8,16 @@ export async function GET(request: NextRequest) {
     const { searchParams } = new URL(request.url);
     const date = searchParams.get('date');
     
-    let mealsQuery = db.select().from(meals);
-    if (date) {
-      mealsQuery = mealsQuery.where(eq(meals.date, date));
-    }
-    
-    const allMeals = await mealsQuery;
+    const allMeals = date 
+      ? await db.select().from(meals).where(eq(meals.date, date))
+      : await db.select().from(meals);
     const goals = await db.select().from(nutritionGoals).limit(1);
     
     return NextResponse.json({
       meals: allMeals,
       goals: goals[0] || { kcalTarget: 2400, proteinTarget: "150" },
     });
-  } catch (error) {
+  } catch {
     return NextResponse.json({ error: "Failed to fetch nutrition data" }, { status: 500 });
   }
 }
@@ -39,7 +36,7 @@ export async function POST(request: NextRequest) {
     }).returning();
     
     return NextResponse.json(newMeal);
-  } catch (error) {
+  } catch {
     return NextResponse.json({ error: "Failed to add meal" }, { status: 500 });
   }
 }
@@ -73,7 +70,7 @@ export async function PUT(request: NextRequest) {
       
       return NextResponse.json(newGoals);
     }
-  } catch (error) {
+  } catch {
     return NextResponse.json({ error: "Failed to update goals" }, { status: 500 });
   }
 }

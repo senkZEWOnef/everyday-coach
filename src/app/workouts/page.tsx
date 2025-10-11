@@ -342,13 +342,13 @@ export default function WorkoutsPage() {
       date: new Date().toISOString(),
       duration: workoutBuilder.duration,
       calories: workoutBuilder.calories,
-      exercises: workoutBuilder.exercises.map(ex => ({
+      exercises: workoutBuilder.exercises.map((ex, index) => ({
+        id: `${Date.now()}-${index}`,
         name: ex.name,
-        sets: ex.sets.map(set => ({
-          reps: set.reps,
-          weight: set.weight,
-          completed: true
-        }))
+        bodyPart: "unknown",
+        sets: ex.sets.length,
+        reps: ex.sets[0]?.reps || 0,
+        weight: ex.sets[0]?.weight || 0
       }))
     };
     

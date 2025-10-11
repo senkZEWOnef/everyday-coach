@@ -1,5 +1,6 @@
 "use client";
 import { BookOpenCheck, Star, Plus, Search, Filter, Save, X, Camera, Upload, Image as ImageIcon } from "lucide-react";
+import Image from "next/image";
 import { useLocalStorage } from "@/components/hooks/useLocalStorage";
 import { useState, useEffect } from "react";
 import { format } from "date-fns";
@@ -338,10 +339,12 @@ export default function BooksPage() {
               <div className="space-y-2">
                 <div className="aspect-[3/4] bg-white/5 rounded-lg flex items-center justify-center mb-2 relative overflow-hidden">
                   {book.coverImage ? (
-                    <img 
+                    <Image 
                       src={book.coverImage} 
                       alt={`${book.title} cover`}
-                      className="w-full h-full object-cover"
+                      fill
+                      className="object-cover"
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                     />
                   ) : (
                     <BookOpenCheck className="w-6 h-6 text-white/40" />
@@ -436,10 +439,12 @@ export default function BooksPage() {
                       <div className="space-y-3">
                         <div className="aspect-[3/4] bg-white/5 rounded-lg flex items-center justify-center relative overflow-hidden">
                           {book.coverImage ? (
-                            <img 
+                            <Image 
                               src={book.coverImage} 
                               alt={`${book.title} cover`}
-                              className="w-full h-full object-cover"
+                              fill
+                              className="object-cover"
+                              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                             />
                           ) : (
                             <div className="text-center">
@@ -484,10 +489,12 @@ export default function BooksPage() {
                       <div className="grid grid-cols-2 gap-2 max-h-40 overflow-y-auto">
                         {book.gallery?.slice(0, 4).map((image, index) => (
                           <div key={index} className="aspect-square bg-white/5 rounded overflow-hidden relative">
-                            <img 
+                            <Image 
                               src={image} 
                               alt={`Gallery ${index + 1}`}
-                              className="w-full h-full object-cover"
+                              fill
+                              className="object-cover"
+                              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                             />
                           </div>
                         ))}
@@ -632,14 +639,16 @@ export default function BooksPage() {
                         ) : (
                           book.gallery?.map((image, index) => (
                             <div key={index} className="aspect-square bg-white/5 rounded-lg overflow-hidden relative group">
-                              <img 
+                              <Image 
                                 src={image} 
                                 alt={`Gallery ${index + 1}`}
-                                className="w-full h-full object-cover cursor-pointer"
+                                fill
+                                className="object-cover cursor-pointer"
                                 onClick={() => {
                                   // Open full-size image in new tab
                                   window.open(image, '_blank');
                                 }}
+                                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                               />
                               <button
                                 className="absolute top-2 right-2 bg-red-500/80 hover:bg-red-500 rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity"

@@ -158,9 +158,14 @@ export default function HabitsPage() {
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
   const [isClient, setIsClient] = useState(false);
   const [showCustomHabitForm, setShowCustomHabitForm] = useState(false);
-  const [newHabitForm, setNewHabitForm] = useState({
+  const [newHabitForm, setNewHabitForm] = useState<{
+    name: string;
+    category: HabitDefinition["category"];
+    description: string;
+    icon: string;
+  }>({
     name: "",
-    category: "personal" as const,
+    category: "personal",
     description: "",
     icon: "🎯"
   });
@@ -340,16 +345,19 @@ export default function HabitsPage() {
     const weekStart = startOfWeek(selectedDate);
     const weekEnd = endOfWeek(selectedDate);
     
-    // Get workout stats for the week
-    const weekWorkouts = safeWorkoutData.filter(w => 
-      isWithinInterval(new Date(w.date), { start: weekStart, end: weekEnd })
-    ).length + safeWeightData.filter(w => 
-      isWithinInterval(new Date(w.date), { start: weekStart, end: weekEnd })
-    ).length;
+    // Get workout stats for the week (with safe checking)
+    const weekWorkouts = safeWorkoutData.filter((w: unknown) => {
+      const workout = w as { date?: string };
+      return workout.date && isWithinInterval(new Date(workout.date), { start: weekStart, end: weekEnd });
+    }).length + safeWeightData.filter((w: unknown) => {
+      const weight = w as { date?: string };
+      return weight.date && isWithinInterval(new Date(weight.date), { start: weekStart, end: weekEnd });
+    }).length;
 
-    const weekMeals = safeNutritionData.filter(m => 
-      isWithinInterval(new Date(m.date), { start: weekStart, end: weekEnd })
-    ).length;
+    const weekMeals = safeNutritionData.filter((m: unknown) => {
+      const meal = m as { date?: string };
+      return meal.date && isWithinInterval(new Date(meal.date), { start: weekStart, end: weekEnd });
+    }).length;
 
     // Generate AI insights
     const insights = [];
@@ -428,13 +436,13 @@ export default function HabitsPage() {
     <div className="space-y-8">
       {/* Date Navigation Header */}
       <section className="space-y-4">
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-4">
             <button onClick={goToPreviousDay} className="btn-ghost p-2">
               <ChevronLeft className="w-5 h-5" />
             </button>
             <div className="text-center">
-              <h1 className="text-2xl font-semibold">
+              <h1 className="text-xl sm:text-2xl font-semibold">
                 {format(selectedDate, "EEEE, MMM dd")}
               </h1>
               <p className="text-white/60 text-sm">
@@ -445,33 +453,33 @@ export default function HabitsPage() {
               <ChevronRight className="w-5 h-5" />
             </button>
           </div>
-          <div className="flex gap-2">
-            <button onClick={goToToday} className="btn-ghost">
+          <div className="flex flex-wrap gap-2 justify-center sm:justify-end">
+            <button onClick={goToToday} className="btn-ghost text-sm">
               <Calendar className="w-4 h-4 mr-1" />
-              Today
+              <span className="hidden sm:inline">Today</span>
             </button>
             {isSunday(selectedDate) && (
               <button 
                 onClick={generateWeeklyReview}
-                className="btn-ghost"
+                className="btn-ghost text-sm"
               >
                 <Brain className="w-4 h-4 mr-1" />
-                Weekly Review
+                <span className="hidden sm:inline">Weekly Review</span>
               </button>
             )}
             <button 
               onClick={() => setShowStatsView(!showStatsView)} 
-              className="btn-ghost"
+              className="btn-ghost text-sm"
             >
               <BarChart3 className="w-4 h-4 mr-1" />
-              Stats
+              <span className="hidden sm:inline">Stats</span>
             </button>
             <button 
               onClick={() => setShowHabitSelector(!showHabitSelector)} 
-              className="btn-ghost"
+              className="btn-ghost text-sm"
             >
               <Target className="w-4 h-4 mr-1" />
-              Habits
+              <span className="hidden sm:inline">Habits</span>
             </button>
           </div>
         </div>
@@ -479,7 +487,7 @@ export default function HabitsPage() {
 
       {/* Weekly Review Panel */}
       {showWeeklyReview && safeWeeklyReviews.length > 0 && (
-        <section className="card p-6 space-y-4">
+        <section className="card p-4 sm:p-6 space-y-4">
           <div className="flex items-center justify-between">
             <h3 className="font-semibold flex items-center gap-2">
               <Sparkles className="w-5 h-5 text-yellow-400" />
@@ -494,7 +502,7 @@ export default function HabitsPage() {
             const latestReview = safeWeeklyReviews[0];
             return (
               <div className="space-y-4">
-                <div className="grid md:grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
                     <h4 className="font-medium mb-2">📊 Week Summary</h4>
                     <div className="space-y-2">
@@ -515,7 +523,7 @@ export default function HabitsPage() {
                   </div>
                 </div>
 
-                <div className="grid md:grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
                     <h4 className="font-medium mb-2">🎯 Recommendations</h4>
                     <div className="space-y-1">
@@ -546,9 +554,9 @@ export default function HabitsPage() {
       {showStatsView && (
         <section className="space-y-4">
           <h2 className="text-xl font-semibold">Habit Analytics</h2>
-          <div className="grid md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* Weekly Stats */}
-            <div className="card p-6 space-y-4">
+            <div className="card p-4 sm:p-6 space-y-4">
               <h3 className="font-semibold">📊 This Week</h3>
               <div className="grid grid-cols-2 gap-4">
                 <div>
@@ -576,7 +584,7 @@ export default function HabitsPage() {
             </div>
 
             {/* Monthly Stats */}
-            <div className="card p-6 space-y-4">
+            <div className="card p-4 sm:p-6 space-y-4">
               <h3 className="font-semibold">📈 This Month</h3>
               <div className="grid grid-cols-2 gap-4">
                 <div>
@@ -607,13 +615,13 @@ export default function HabitsPage() {
 
       {/* Habit Selector */}
       {showHabitSelector && (
-        <section className="card p-6 space-y-4">
-          <div className="flex items-center justify-between">
+        <section className="card p-4 sm:p-6 space-y-4">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
             <h3 className="font-semibold">Select Your Daily Habits</h3>
-            <div className="flex items-center gap-4">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
               <button
                 onClick={() => setShowCustomHabitForm(!showCustomHabitForm)}
-                className="btn-ghost text-sm"
+                className="btn-ghost text-sm w-full sm:w-auto"
               >
                 + Create Custom Habit
               </button>
@@ -627,7 +635,7 @@ export default function HabitsPage() {
           {showCustomHabitForm && (
             <div className="bg-white/5 rounded-lg p-4 space-y-4">
               <h4 className="font-medium">Create Custom Habit</h4>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium mb-1">Habit Name *</label>
                   <input
@@ -643,7 +651,7 @@ export default function HabitsPage() {
                   <select
                     className="w-full bg-black/30 border border-white/20 rounded-lg px-3 py-2"
                     value={newHabitForm.category}
-                    onChange={(e) => setNewHabitForm({...newHabitForm, category: e.target.value as "health" | "learning" | "social" | "productivity" | "wellness" | "personal"})}
+                    onChange={(e) => setNewHabitForm({...newHabitForm, category: e.target.value as HabitDefinition["category"]})}
                   >
                     <option value="health">Health & Fitness</option>
                     <option value="learning">Learning & Growth</option>
@@ -675,17 +683,17 @@ export default function HabitsPage() {
                   />
                 </div>
               </div>
-              <div className="flex gap-2">
+              <div className="flex flex-col sm:flex-row gap-2">
                 <button
                   onClick={createCustomHabit}
                   disabled={!newHabitForm.name.trim()}
-                  className="btn-primary"
+                  className="btn-primary w-full sm:w-auto"
                 >
                   Create Habit
                 </button>
                 <button
                   onClick={() => setShowCustomHabitForm(false)}
-                  className="btn-ghost"
+                  className="btn-ghost w-full sm:w-auto"
                 >
                   Cancel
                 </button>
@@ -693,7 +701,7 @@ export default function HabitsPage() {
             </div>
           )}
           
-          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-2">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-2">
             {categories.map(category => (
               <button
                 key={category.id}
@@ -707,7 +715,7 @@ export default function HabitsPage() {
             ))}
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2 max-h-96 overflow-y-auto">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 max-h-96 overflow-y-auto">
             {(selectedCategory === "all" ? ALL_HABITS : ALL_HABITS.filter(h => h.category === selectedCategory))
               .map(habit => (
                 <button
@@ -779,7 +787,7 @@ export default function HabitsPage() {
             </button>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
             {filteredHabits.map(habit => {
               const isCompleted = isHabitCompleted(habit.id);
               const completedEntry = selectedDateEntries.find(e => e.habitId === habit.id && e.completed);

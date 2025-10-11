@@ -7,7 +7,7 @@ export async function GET() {
   try {
     const allBooks = await db.select().from(books);
     return NextResponse.json(allBooks);
-  } catch (error) {
+  } catch {
     return NextResponse.json({ error: "Failed to fetch books" }, { status: 500 });
   }
 }
@@ -29,7 +29,7 @@ export async function POST(request: NextRequest) {
     }).returning();
     
     return NextResponse.json(newBook);
-  } catch (error) {
+  } catch {
     return NextResponse.json({ error: "Failed to create book" }, { status: 500 });
   }
 }
@@ -60,7 +60,7 @@ export async function PUT(request: NextRequest) {
       .returning();
     
     return NextResponse.json(updatedBook);
-  } catch (error) {
+  } catch {
     return NextResponse.json({ error: "Failed to update book" }, { status: 500 });
   }
 }

@@ -8,22 +8,19 @@ export async function GET(request: NextRequest) {
     const { searchParams } = new URL(request.url);
     const date = searchParams.get('date');
     
-    let workoutsQuery = db.select().from(workouts);
-    let plansQuery = db.select().from(workoutPlans);
+    const allWorkouts = date 
+      ? await db.select().from(workouts).where(eq(workouts.date, date))
+      : await db.select().from(workouts);
     
-    if (date) {
-      workoutsQuery = workoutsQuery.where(eq(workouts.date, date));
-      plansQuery = plansQuery.where(eq(workoutPlans.date, date));
-    }
-    
-    const allWorkouts = await workoutsQuery;
-    const plans = await plansQuery;
+    const plans = date 
+      ? await db.select().from(workoutPlans).where(eq(workoutPlans.date, date))
+      : await db.select().from(workoutPlans);
     
     return NextResponse.json({
       workouts: allWorkouts,
       plans: plans,
     });
-  } catch (error) {
+  } catch {
     return NextResponse.json({ error: "Failed to fetch workouts" }, { status: 500 });
   }
 }
@@ -44,7 +41,7 @@ export async function POST(request: NextRequest) {
     }).returning();
     
     return NextResponse.json(newWorkout);
-  } catch (error) {
+  } catch {
     return NextResponse.json({ error: "Failed to add workout" }, { status: 500 });
   }
 }
@@ -76,7 +73,7 @@ export async function PUT(request: NextRequest) {
       
       return NextResponse.json(newPlan);
     }
-  } catch (error) {
+  } catch {
     return NextResponse.json({ error: "Failed to update workout plan" }, { status: 500 });
   }
 }

@@ -35,7 +35,7 @@ body {
   }
 }
 
-/* Mobile-specific styles */
+/* Mobile and Tablet responsive styles */
 @media (max-width: 640px) {
   .grid-responsive {
     grid-template-columns: 1fr;
@@ -46,13 +46,69 @@ body {
   }
   
   /* Better touch targets for mobile */
-  button, a {
+  button, a, input, textarea {
     min-height: 44px;
+    min-width: 44px;
   }
   
   /* Improved spacing on mobile */
   .mobile-padding {
     padding: 1rem;
+  }
+  
+  /* Mobile-friendly cards */
+  .card {
+    @apply mx-2 rounded-xl;
+  }
+  
+  /* Better text sizing on mobile */
+  h1 { @apply text-2xl; }
+  h2 { @apply text-xl; }
+  h3 { @apply text-lg; }
+  
+  /* Mobile-optimized forms */
+  input, textarea, select {
+    @apply text-base; /* Prevents zoom on iOS */
+  }
+}
+
+/* Tablet styles */
+@media (min-width: 641px) and (max-width: 1024px) {
+  .container-px {
+    @apply px-6;
+  }
+  
+  /* Tablet grid layouts */
+  .tablet-grid-2 {
+    @apply grid grid-cols-2 gap-4;
+  }
+  
+  .tablet-grid-3 {
+    @apply grid grid-cols-3 gap-4;
+  }
+  
+  /* Touch-friendly on tablets too */
+  button, a {
+    min-height: 40px;
+  }
+}
+
+/* Landscape mobile styles */
+@media (max-width: 926px) and (orientation: landscape) {
+  .landscape-scroll {
+    max-height: 70vh;
+    overflow-y: auto;
+  }
+  
+  /* Reduce header size in landscape */
+  h1 { @apply text-xl; }
+  h2 { @apply text-lg; }
+}
+
+/* High DPI displays */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  .card {
+    @apply border-0; /* Remove thin borders on high DPI */
   }
 }
 

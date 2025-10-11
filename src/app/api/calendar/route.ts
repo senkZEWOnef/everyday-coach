@@ -12,7 +12,7 @@ export async function GET() {
       events,
       notifications: allNotifications,
     });
-  } catch (error) {
+  } catch {
     return NextResponse.json({ error: "Failed to fetch calendar data" }, { status: 500 });
   }
 }
@@ -43,7 +43,7 @@ export async function POST(request: NextRequest) {
     }
     
     return NextResponse.json(newEvent);
-  } catch (error) {
+  } catch {
     return NextResponse.json({ error: "Failed to create event" }, { status: 500 });
   }
 }
@@ -59,7 +59,7 @@ export async function PUT(request: NextRequest) {
       .returning();
     
     return NextResponse.json(updatedEvent);
-  } catch (error) {
+  } catch {
     return NextResponse.json({ error: "Failed to update event" }, { status: 500 });
   }
 }
@@ -81,7 +81,7 @@ export async function DELETE(request: NextRequest) {
     await db.delete(calendarEvents).where(eq(calendarEvents.id, eventId));
     
     return NextResponse.json({ success: true });
-  } catch (error) {
+  } catch {
     return NextResponse.json({ error: "Failed to delete event" }, { status: 500 });
   }
 }

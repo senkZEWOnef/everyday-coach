@@ -165,7 +165,7 @@ export const Footer = () => {
         <div className="pb-6">
           <div className="bg-gradient-to-r from-blue-500/10 to-purple-500/10 rounded-lg p-4 text-center">
             <p className="text-sm italic text-white/80">
-              "Every day is a new opportunity to become the person God created you to be."
+              &ldquo;Every day is a new opportunity to become the person God created you to be.&rdquo;
             </p>
           </div>
         </div>

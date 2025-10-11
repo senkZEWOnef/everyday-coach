@@ -56,11 +56,17 @@ export default function StuffsPage() {
   const [showCreateForm, setShowCreateForm] = useState(false);
   const [isClient, setIsClient] = useState(false);
 
-  const [newItem, setNewItem] = useState({
+  const [newItem, setNewItem] = useState<{
+    title: string;
+    content: string;
+    type: "note" | "folder";
+    tags: string[];
+    color: string;
+  }>({
     title: "",
     content: "",
-    type: "note" as const,
-    tags: [] as string[],
+    type: "note",
+    tags: [],
     color: COLORS[0]
   });
 
@@ -110,7 +116,7 @@ export default function StuffsPage() {
       const folder = safeItems.find(item => item.id === currentId);
       if (folder) {
         path.unshift(folder);
-        currentId = folder.folderId;
+        currentId = folder.folderId || null;
       } else {
         break;
       }
@@ -128,7 +134,7 @@ export default function StuffsPage() {
       title: newItem.title.trim(),
       content: newItem.content,
       type: newItem.type,
-      folderId: currentFolder,
+      folderId: currentFolder || undefined,
       images: [],
       tags: newItem.tags,
       createdAt: new Date().toISOString(),
@@ -299,7 +305,7 @@ export default function StuffsPage() {
           >
             Home
           </button>
-          {getBreadcrumbPath().map((folder, index) => (
+          {getBreadcrumbPath().map((folder) => (
             <div key={folder.id} className="flex items-center gap-2">
               <span className="text-white/40">/</span>
               <button

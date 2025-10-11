@@ -12,7 +12,7 @@ export async function GET() {
       habits: allHabits,
       completions: allCompletions,
     });
-  } catch (error) {
+  } catch {
     return NextResponse.json({ error: "Failed to fetch habits" }, { status: 500 });
   }
 }
@@ -27,7 +27,7 @@ export async function POST(request: NextRequest) {
     }).returning();
     
     return NextResponse.json(newHabit);
-  } catch (error) {
+  } catch {
     return NextResponse.json({ error: "Failed to create habit" }, { status: 500 });
   }
 }
@@ -53,7 +53,7 @@ export async function PUT(request: NextRequest) {
     }
     
     return NextResponse.json({ success: true });
-  } catch (error) {
+  } catch {
     return NextResponse.json({ error: "Failed to toggle habit" }, { status: 500 });
   }
 }
